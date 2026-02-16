@@ -1,0 +1,32 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<main>
+  {% if error %}
+    {# Error state: missing/invalid/non-succeeded payment #}
+    <div class="mt-40 text-center text-warning">
+      <h1>
+        <i class="fas fa-exclamation-circle"></i>
+        Payment Issue
+      </h1>
+      <p class="mt-20 text-secondary">{{ error }}</p>
+    </div>
+  {% else %}
+    {# Success: show confirmed payment details #}
+    <div class="mt-40 text-center text-success">
+      <h1>
+        <i class="far fa-check-circle"></i>
+        Success!
+      </h1>
+    </div>
+    <div class="mt-40 text-center">
+      {# Payment confirmation details #}
+      <div class="mt-20 text-center text-secondary border-placeholder">
+        <p>Thank you for your purchase.</p>
+        <p>Total charged: <strong>${{ "%.2f"|format(amount / 100) }}</strong></p>
+        <p>Payment ID: <strong>{{ payment_intent_id }}</strong></p>
+      </div>
+    </div>
+  {% endif %}
+</main>
+{% endblock %}

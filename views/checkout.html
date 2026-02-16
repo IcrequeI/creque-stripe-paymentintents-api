@@ -1,0 +1,57 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="row justify-content-md-center">
+  <div class="col-6">
+    <div class="text-center mt-40">
+      <h1>
+        Checkout — Stripe Press
+      </h1>
+      <h5 class="text-secondary">
+        {{ title }}
+      </h5>
+      <hr class="mt-40">
+      <div class="mt-20 text-info">
+        Total due: $<span class="amount" data-amount="{{ amount }}"></span>
+      </div>
+      <div class="mt-10 text-muted d-none">
+        Payment Intent: <strong id="payment-intent-id"></strong>
+      </div>
+    </div>
+    <div class="card box-shadow mt-40">
+      <div class="card-body">
+        {# Payment form
+             data-* attributes pass server values to checkout.js without inline scripts. #}
+        <form id="payment-form"
+              data-publishable-key="{{ publishable_key }}"
+              data-item="{{ item }}"
+              data-return-url="{{ request.url_root }}success">
+          {# --- Link Authentication Element (email + Link autofill) --- #}
+          <div id="link-auth-element" class="mt-20">
+            <!-- Stripe.js injects the email field with Link integration -->
+          </div>
+          {# Address Element mounts here #}
+          <div id="address-element" class="mt-20">
+            <!-- Stripe.js injects the Address Element -->
+          </div>
+          {# Payment Element mounts here #}
+          <div id="payment-element" class="mt-20">
+            <!-- Stripe.js injects the Payment Element -->
+          </div>
+          {# Error messages (card declined, etc.) #}
+          <div id="payment-message" class="mt-20 text-danger d-none"></div>
+          <div class="mt-20">
+            <button id="submit-button" type="submit" class="btn btn-lg btn-block btn-primary">Pay $<span class="amount" data-amount="{{ amount }}"></span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{# Load Stripe.js + our checkout logic #}
+{% block scripts %}
+<script src="https://js.stripe.com/v3/"></script>
+<script src="/js/checkout.js"></script>
+{% endblock %}
